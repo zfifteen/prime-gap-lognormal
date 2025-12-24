@@ -26,13 +26,18 @@ Create a self-contained, executable demonstration that proves prime gaps follow 
 2. Extract consecutive prime gaps
 3. Partition gaps into bands by scale (assign each gap to band based on log10 of the smaller prime)
 4. Apply log-transformation to gaps
-5. Fit lognormal distribution to log-transformed data
+5. Fit lognormal distribution to log-transformed data using **Maximum Likelihood Estimation (MLE)**
+   - Primary method: `scipy.stats.lognorm.fit(data)` for parameter estimation
+   - Report both μ (location) and σ (scale) parameters
+   - Include 95% confidence intervals via bootstrap (1000 iterations)
+   - Optional validation: Compare MLE results with Method of Moments
 6. Run statistical tests for normality/lognormality
 
 **Output:**
 
 - Statistical test results (p-values) for each band
-- Lognormal parameters (μ, σ) per band
+- Lognormal parameters (μ, σ) per band with 95% confidence intervals
+- Comparison table: MLE vs Method of Moments parameters (optional validation)
 - Visual Q-Q plots showing lognormal fit
 - Summary: X/6 bands pass distributional tests
 
@@ -80,7 +85,8 @@ prime_gap_lognormal_gist.py
 ├── generate_primes()         # Sieve of Eratosthenes or load from file
 ├── extract_gaps()             # Compute consecutive prime gaps
 ├── partition_by_band()        # Assign gaps to log-spaced bands
-├── fit_lognormal()            # Estimate μ, σ via MLE
+├── fit_lognormal_mle()        # Estimate μ, σ via MLE with confidence intervals
+├── fit_lognormal_mom()        # Optional: Method of Moments for validation
 ├── test_lognormality()        # Run statistical tests
 ├── plot_qq()                  # Generate Q-Q plots
 ├── plot_histogram_overlay()   # Histogram with PDF
@@ -122,6 +128,7 @@ Implementation is considered successful if:
 - All 6 bands achieve p-value > 0.05 on at least one test
 - Q-Q plots visually demonstrate linearity
 - Output matches zfifteen's playground findings
+- Parameter estimates are stable (MLE and MoM within 10% of each other)
 
 ## Notes
 

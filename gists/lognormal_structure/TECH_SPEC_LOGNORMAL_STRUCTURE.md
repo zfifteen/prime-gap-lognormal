@@ -24,14 +24,19 @@ Create a self-contained, executable demonstration that proves prime gaps follow 
 
 1. Generate primes using optimized sieve (or load pre-computed)
 2. Extract consecutive prime gaps
-3. Partition gaps into bands by scale (assign each gap to band based on log10 of the smaller prime)
-4. Apply log-transformation to gaps
-5. Fit lognormal distribution to log-transformed data using **Maximum Likelihood Estimation (MLE)**
+3. **Data quality filtering:**
+   - Remove gaps with value 0 (mathematically undefined for log transformation)
+   - Apply minimum sample size requirement: **≥1000 gaps per band**
+   - Report bands with insufficient samples as "INSUFFICIENT_DATA" (do not test)
+   - Note: Do NOT filter outliers - preserve all non-zero gaps for scientific integrity
+4. Partition gaps into bands by scale (assign each gap to band based on log10 of the smaller prime)
+5. Apply log-transformation to gaps
+6. Fit lognormal distribution to log-transformed data using **Maximum Likelihood Estimation (MLE)**
    - Primary method: `scipy.stats.lognorm.fit(data)` for parameter estimation
    - Report both μ (location) and σ (scale) parameters
    - Include 95% confidence intervals via bootstrap (1000 iterations)
    - Optional validation: Compare MLE results with Method of Moments
-6. Run statistical tests for normality/lognormality
+7. Run statistical tests for normality/lognormality
 
 **Output:**
 
@@ -39,7 +44,7 @@ Create a self-contained, executable demonstration that proves prime gaps follow 
 - Lognormal parameters (μ, σ) per band with 95% confidence intervals
 - Comparison table: MLE vs Method of Moments parameters (optional validation)
 - Visual Q-Q plots showing lognormal fit
-- Summary: X/6 bands pass distributional tests
+- Summary: X/6 bands pass distributional tests (with sample sizes reported)
 
 ### 2. Statistical Tests
 
@@ -91,16 +96,17 @@ Create a self-contained, executable demonstration that proves prime gaps follow 
 ```
 prime_gap_lognormal_gist.py
 │
-├── generate_primes()         # Sieve of Eratosthenes or load from file
-├── extract_gaps()             # Compute consecutive prime gaps
-├── partition_by_band()        # Assign gaps to log-spaced bands
-├── fit_lognormal_mle()        # Estimate μ, σ via MLE with confidence intervals
-├── fit_lognormal_mom()        # Optional: Method of Moments for validation
-├── test_shapiro_wilk()        # Primary normality test
-├── test_anderson_darling()    # Secondary tail-focused test
-├── plot_qq()                  # Generate Q-Q plots
-├── plot_histogram_overlay()   # Histogram with PDF
-└── main()                     # Orchestrate full analysis
+├── generate_primes()          # Sieve of Eratosthenes or load from file
+├── extract_gaps()              # Compute consecutive prime gaps
+├── filter_data_quality()       # Remove zero gaps, enforce minimum sample size
+├── partition_by_band()         # Assign gaps to log-spaced bands
+├── fit_lognormal_mle()         # Estimate μ, σ via MLE with confidence intervals
+├── fit_lognormal_mom()         # Optional: Method of Moments for validation
+├── test_shapiro_wilk()         # Primary normality test
+├── test_anderson_darling()     # Secondary tail-focused test
+├── plot_qq()                   # Generate Q-Q plots
+├── plot_histogram_overlay()    # Histogram with PDF
+└── main()                      # Orchestrate full analysis
 ```
 
 **Requirements:**
@@ -134,7 +140,7 @@ Based on zfifteen's findings, the implementation should demonstrate:
 Implementation is considered successful if:
 
 - Code runs without modification on standard Python installation
-- Generates 6 bands with balanced sample sizes
+- Generates 6 bands with balanced sample sizes (all ≥1000 gaps)
 - All 6 bands achieve p-value > 0.05 on both Shapiro-Wilk AND Anderson-Darling tests
 - Q-Q plots visually demonstrate linearity
 - Output matches zfifteen's playground findings
@@ -146,3 +152,4 @@ Implementation is considered successful if:
 - Intended audience: mathematicians, statisticians, number theorists
 - Should be self-explanatory with minimal documentation
 - Code clarity prioritized over performance optimization
+- **Data integrity**: No outlier removal to preserve scientific validity - only filter zero gaps (mathematical necessity)

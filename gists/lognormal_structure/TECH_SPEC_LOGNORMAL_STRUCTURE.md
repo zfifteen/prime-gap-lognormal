@@ -43,14 +43,23 @@ Create a self-contained, executable demonstration that proves prime gaps follow 
 
 ### 2. Statistical Tests
 
-Must implement at least 2 of:
+**Required tests (gold standard for scientific validity):**
 
-- **Kolmogorov-Smirnov test**: Compare empirical vs theoretical lognormal CDF
-- **Anderson-Darling test**: Weighted goodness-of-fit emphasizing tails
-- **Shapiro-Wilk test**: Test normality of log-transformed gaps
-- **Jarque-Bera test**: Test normality via skewness and kurtosis
+- **Shapiro-Wilk test** (PRIMARY): Most powerful test for normality of log-transformed gaps
+  - `scipy.stats.shapiro(np.log(gaps))`
+  - Gold standard in statistical literature
+  - Highest statistical power for detecting deviations from normality
 
-**Success criteria:** p-value > 0.05 indicates lognormal fit
+- **Anderson-Darling test** (SECONDARY): Emphasizes tail behavior
+  - `scipy.stats.anderson(np.log(gaps), dist='norm')`
+  - Critical for validating distribution tails
+  - Weighted goodness-of-fit test
+
+**Optional supplementary tests:**
+- Kolmogorov-Smirnov test: Compare empirical vs theoretical lognormal CDF
+- Jarque-Bera test: Test normality via skewness and kurtosis
+
+**Success criteria:** p-value > 0.05 on both Shapiro-Wilk AND Anderson-Darling indicates strong lognormal fit
 
 ### 3. Visualization Requirements
 
@@ -87,7 +96,8 @@ prime_gap_lognormal_gist.py
 ├── partition_by_band()        # Assign gaps to log-spaced bands
 ├── fit_lognormal_mle()        # Estimate μ, σ via MLE with confidence intervals
 ├── fit_lognormal_mom()        # Optional: Method of Moments for validation
-├── test_lognormality()        # Run statistical tests
+├── test_shapiro_wilk()        # Primary normality test
+├── test_anderson_darling()    # Secondary tail-focused test
 ├── plot_qq()                  # Generate Q-Q plots
 ├── plot_histogram_overlay()   # Histogram with PDF
 └── main()                     # Orchestrate full analysis
@@ -125,7 +135,7 @@ Implementation is considered successful if:
 
 - Code runs without modification on standard Python installation
 - Generates 6 bands with balanced sample sizes
-- All 6 bands achieve p-value > 0.05 on at least one test
+- All 6 bands achieve p-value > 0.05 on both Shapiro-Wilk AND Anderson-Darling tests
 - Q-Q plots visually demonstrate linearity
 - Output matches zfifteen's playground findings
 - Parameter estimates are stable (MLE and MoM within 10% of each other)

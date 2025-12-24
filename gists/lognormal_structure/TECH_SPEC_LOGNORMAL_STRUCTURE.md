@@ -331,6 +331,42 @@ the additive/independent process assumed by classical models.
 
 ## References
 
+### Reference Implementation (Playground)
+
+The complete validated implementation is available in the playground repository:
+
+**Primary Source:** [PR-0002_prime_gap_analysis](https://github.com/zfifteen/playground/tree/main/experiments/PR-0002_prime_gap_analysis)
+
+This experiment contains:
+- **Core gap analysis logic**: `src/` directory with extraction, banding, and statistical testing
+- **Lognormal fitting procedures**: Statistical distribution fitting for gaps
+- **Ljung-Box autocorrelation testing**: ACF calculation and significance testing  
+- **Validated results**: [RESULTS.md](https://github.com/zfifteen/playground/blob/main/experiments/PR-0002_prime_gap_analysis/RESULTS.md) with complete empirical data
+- **Methods specification**: [SPEC.md](https://github.com/zfifteen/playground/blob/main/experiments/PR-0002_prime_gap_analysis/SPEC.md) detailing implementation approach
+- **Cross-scale analysis**: [CROSS_SCALE_ANALYSIS.md](https://github.com/zfifteen/playground/blob/main/experiments/PR-0002_prime_gap_analysis/CROSS_SCALE_ANALYSIS.md) showing convergence patterns
+
+**Supporting Libraries:**
+- **lognormal_prefilter**: [GitHub link](https://github.com/zfifteen/playground/tree/main/experiments/lognormal_prefilter) - Gap transformation pipeline (extract → log-transform → normalize)
+- **loglog_kernel**: [GitHub link](https://github.com/zfifteen/playground/tree/main/experiments/loglog_kernel) - Doubly-logarithmic transforms (if needed for scale analysis)
+
+**Performance Reference:** [PR-0003_prime_log_gap_optimized](https://github.com/zfifteen/playground/tree/main/experiments/PR-0003_prime_log_gap_optimized)
+- Optimized implementations for larger scales
+- [PERFORMANCE_ANALYSIS.md](https://github.com/zfifteen/playground/blob/main/experiments/PR-0003_prime_log_gap_optimized/PERFORMANCE_ANALYSIS.md) with benchmarks
+- Memory-efficient banding strategies
+
+**Expected Results (from playground validation):**
+
+| Scale | N Primes | Lognormal Bands Pass | ACF Significance |
+|-------|----------|---------------------|------------------|
+| 10^6  | 78,498   | 100% (6/6)          | 63% lags         |
+| 10^7  | 664,579  | 100% (6/6)          | 85% lags         |
+| 10^8  | 5,761,455| 100% (6/6)          | 98% lags         |
+
+Your implementation should reproduce these results.
+
+
+
 - REPO_STORY.md: Discovery context
+- PLAYGROUND_REFERENCES.md: Complete catalog of playground experiments
 - PLAYGROUND_REFERENCES.md: Link to original experiments
 - Your published results: 100% lognormal band coverage at 10^8 scale

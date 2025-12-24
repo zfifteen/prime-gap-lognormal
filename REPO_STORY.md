@@ -6,17 +6,16 @@ For centuries, prime numbers have been studied through their **counts** — how 
 
 But primes also tell a second story through their **gaps** — the distances between consecutive primes. This repository reveals that story: **prime gaps follow lognormal distributions and exhibit strong autocorrelation**, patterns incompatible with classical random sieve models.
 
-## The Findings
-From experiments spanning 10^6 to 10^8, three signatures emerge with brutal consistency:
+## The Discovery
 
-1. **PNT accuracy**: Prime counts converge to theoretical predictions with sub-logarithmic corrections (slope ≈ -0.0035), reaching 99.99% accuracy at scale.
+From experiments spanning 10^6 to 10^8, two discoveries emerge with brutal consistency:
 
-2. This computational validation establishes the accuracy of the prime generation and counting framework, providing the
-3.foundation for gap analysis.
 
-3. **Discovery 1 — Lognormal structure**: Gap distributions are lognormal across all scales and bands — 100% of 6 tested bands pass distributional tests with p-values > 0.05. This implies **multiplicative randomness** in gap formation.
 
-4. **Discovery 2 — Autocorrelation**: Gaps exhibit memory. At 10^8, 98% of tested lags show significant autocorrelation (Ljung-Box p < 0.05). Gaps are not independent events.
+
+1. **Lognormal structure**: Gap distributions are lognormal across all scales and bands — 100% of 6 tested bands pass distributional tests with p-values > 0.05. This implies **multiplicative randomness** in gap formation.
+
+2. **Autocorrelation**: Gaps exhibit memory. At 10^8, 98% of tested lags show significant autocorrelation (Ljung-Box p < 0.05). Gaps are not independent events.
 ## The Conflict
 
 These findings collide with the Cramér random model, which assumes gaps behave like independent exponential variables drawn from a Poisson process. If gaps were truly random:
